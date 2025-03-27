@@ -10,14 +10,14 @@
 # User configure part
 #========================================================================
 # Define fortran compiler - gnu, intel, nvidia, cray
-FC  =
+FC  = gnu
 
 # Define the compiler exe
 # For MPI use, mpifort, mpif77, mpif90, mpif08
-FC_EXE =
+FC_EXE = mpifort
 
 # Define the executable
-EXE =
+EXE = mizuRoute.exe
 
 # Define optional setting
 # fast:      Enables optimizations
@@ -26,7 +26,7 @@ EXE =
 MODE = debug
 
 # define open MP flags (yes if used)
-isOpenMP = yes
+isOpenMP = no
 LIBOPENMP =
 
 # define if should use external librarys (yes if used)
@@ -39,23 +39,35 @@ isGPTL = yes
 # gpfs is the specific filesystem used on cheyenne
 # (can be gpfs or lustre) Only use it if you know for sure about your filesystem.
 # If not make this setting blank
-PIO_FILESYSTEM_HINTS = gpfs
+PIO_FILESYSTEM_HINTS =
 
 # Define core directory below which everything resides
 # parent directory of the 'build' directory
 # do not put space at the end of path
-F_MASTER =
+F_MASTER=$(CURDIR)/../
 
 # Define the NetCDF libraries and path to include files
-NCDF_PATH =
-NCDF_C_PATH =
-NCDF_FORTRAN_PATH =
-PNETCDF_PATH =
-PIO_PATH=        # NCAR HPC-> $(PIO)
+# NCDF_PATH = /opt/homebrew/Cellar/netcdf-fortran/4.6.1
+# NCDF_C_PATH=$(shell nc-config --prefix)
+# NCDF_FORTRAN_PATH=$(shell nf-config --prefix)
+# PNETCDF_PATH=$(shell pnetcdf-config --prefix)
+PIO_PATH=$(CURDIR)/../../libraries/pio-build/piolib
 
-LIBNETCDF = -Wl,-rpath,$(NCDF_PATH)/lib \
-            -L$(NCDF_PATH)/lib -lnetcdff -lnetcdf
-INCNETCDF = -I$(NCDF_PATH)/include
+# LIBNETCDF = -Wl,-rpath,$(NCDF_FORTRAN_PATH)/lib \
+#             -L$(NCDF_FORTRAN_PATH)/lib -lnetcdff\
+#             -L$(NCDF_C_PATH)/lib -lnetcdf
+# INCNETCDF = -I$(NCDF_FORTRAN_PATH)/include -I$(NCDF_C_PATH)/include
+
+# Include flags
+INCNETCDF := -I$(shell nc-config --includedir) -I$(shell nf-config --includedir)
+# INCNETCDF := $(addprefix -I,$(INCNETCDF))
+
+# Library flags
+# `--libs` gives the right order and any required system libs
+LIBNETCDF := $(shell nf-config --flibs)\
+             $(shell nc-config --libs)\
+             -L$(shell pnetcdf-config --libdir) -lpnetcdf
+
 
 # Error check
 ifndef FC
@@ -251,7 +263,7 @@ LIBDIR = $(F_MASTER)build/lib
 ifdef PIO_PATH
   PIOLIBDIR= $(PIO_PATH)/lib
   PIOINCDIR= $(PIO_PATH)/include
-  PIOLIB   = $(PIOLIBDIR)/libpiof.so $(PIOLIBDIR)/libpioc.so
+  PIOLIB   = $(PIOLIBDIR)/libpiof.a $(PIOLIBDIR)/libpioc.a
 else
   PIOLIBDIR    = $(LIBDIR)/piolib/lib
   PIOINCDIR    = $(LIBDIR)/piolib/include
@@ -260,7 +272,7 @@ endif
 
 ifeq "$(isPIO)" "yes"
   EXTINCLUDES += -I$(PIOINCDIR)
-  EXTLIBS += $(PIOLIB)
+  # EXTLIBS += $(PIOLIB)
   LDFLAGS += -L$(PIOLIBDIR) -lpiof -lpioc
 
   ifeq "$(isGPTL)" "yes"
@@ -268,15 +280,15 @@ ifeq "$(isPIO)" "yes"
   endif
 endif
 
-ifdef PNETCDF_PATH
-        LDFLAGS    += -L$(PNETCDF_PATH)/lib -lpnetcdf
-endif
+# ifdef PNETCDF_PATH
+#         LDFLAGS    += -L$(PNETCDF_PATH)/lib -lpnetcdf
+# endif
 
-$(PIOLIB):
-	cd $(LIBDIR); \
-	$(MAKE) $(MFLAGS) F_MASTER=$(F_MASTER) FC=$(FC_EXE) FC_EXE=$(FC_EXE) FLAGS="$(FLAGS)" \
-	PIO_FILESYSTEM_HINTS=$(PIO_FILESYSTEM_HINTS) PNETCDF_PATH=$(PNETCDF_PATH) isPIO=yes isGPTL=$(isGPTL) \
-	MPIINC_PATHLIST=$(CPATH) NCDF_PATH=$(NCDF_PATH) MODE=$(MODE) $(PIOLIB)
+# $(PIOLIB):
+# 	cd $(LIBDIR); \
+# 	$(MAKE) $(MFLAGS) F_MASTER=$(F_MASTER) FC=$(FC_EXE) FC_EXE=$(FC_EXE) FLAGS="$(FLAGS)" \
+# 	PIO_FILESYSTEM_HINTS=$(PIO_FILESYSTEM_HINTS) PNETCDF_PATH=$(PNETCDF_PATH) isPIO=yes isGPTL=$(isGPTL) \
+# 	MPIINC_PATHLIST=$(CPATH) NCDF_PATH=$(NCDF_PATH) MODE=$(MODE) $(PIOLIB)
 
 # Clean external libs
 cleanlibs: cleanpiolib

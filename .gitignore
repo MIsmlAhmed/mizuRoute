@@ -71,3 +71,6 @@ manage_externals.log
 
 # data folder
 /Hanasaki_test/
+
+# library folder
+/Libraries/*.*
