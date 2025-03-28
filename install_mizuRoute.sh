@@ -37,6 +37,16 @@ check_config nf-config "NetCDF-Fortran"
 check_config nc-config "NetCDF-C"
 check_config pnetcdf-config "PnetCDF"
 
+# Check MPI compilers
+for compiler in mpifort mpicc mpicxx; do
+  if ! command -v $compiler &>/dev/null; then
+    echo "❌ Error: $compiler not found. Please ensure MPI is installed and loaded."
+    exit 1
+  else
+    echo "✅ Found $compiler: $($compiler --version | head -n 1)"
+  fi
+done
+
 #------------------------------------
 
 echo "Step 1: build ParallelIO from GitHub repo locally"
