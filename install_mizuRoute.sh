@@ -1,5 +1,44 @@
 #!/bin/bash
 
+#------------------------------------
+echo "Step 0: check that the needed libraries are available on the current system"
+# a function to check the installation
+check_config() {
+  local cmd="$1"
+  local name="$2"
+
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "❌ Error: $cmd not found. Please install $name."
+    exit 1
+  fi
+
+  local prefix=$($cmd --prefix 2>/dev/null)
+  if [ -z "$prefix" ]; then
+    echo "❌ Error: $cmd --prefix returned nothing. Check $name installation."
+    exit 1
+  fi
+
+  local libdir=$($cmd --libdir 2>/dev/null)
+  if [ -z "$libdir" ]; then
+    echo "❌ Error: $cmd --libdir returned nothing. Check $name installation."
+    exit 1
+  fi
+
+  local includedir=$($cmd --includedir 2>/dev/null)
+  if [ -z "$libdir" ]; then
+    echo "❌ Error: $cmd --includedir returned nothing. Check $name installation."
+    exit 1
+  fi
+
+  echo "✅ $name found at: $prefix"
+}
+
+check_config nf-config "NetCDF-Fortran"
+check_config nc-config "NetCDF-C"
+check_config pnetcdf-config "PnetCDF"
+
+#------------------------------------
+
 echo "Step 1: build ParallelIO from GitHub repo locally"
 
 if [ -d libraries ]; then
