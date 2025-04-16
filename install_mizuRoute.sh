@@ -88,6 +88,7 @@ cmake ../ParallelIO \
   -DCMAKE_C_COMPILER=mpicc \
   -DCMAKE_Fortran_COMPILER=mpifort \
   -DCMAKE_CXX_COMPILER=mpicxx \
+  -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
   -DCMAKE_INSTALL_PREFIX=./piolib
 else
   # Linux machine
