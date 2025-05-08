@@ -51,7 +51,7 @@ F_MASTER=$(CURDIR)/../
 # NCDF_C_PATH=$(shell nc-config --prefix)
 # NCDF_FORTRAN_PATH=$(shell nf-config --prefix)
 # PNETCDF_PATH=$(shell pnetcdf-config --prefix)
-PIO_PATH=$(CURDIR)/../../libraries/pio-build/piolib
+PIO_PATH=$(CURDIR)/lib/piolib
 
 # LIBNETCDF = -Wl,-rpath,$(NCDF_FORTRAN_PATH)/lib \
 #             -L$(NCDF_FORTRAN_PATH)/lib -lnetcdff\

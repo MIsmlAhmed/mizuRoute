@@ -51,14 +51,20 @@ done
 
 echo "Step 1: build ParallelIO from GitHub repo locally"
 
-if [ -d libraries ]; then
-    rm -rf libraries
+cd route/build/lib
+
+# remove previous builds of libraries
+if [ -d pio-build ]; then
+    rm -rf pio-build
+fi
+if [ -d piolib ]; then
+    rm -rf piolib
+fi
+if [ -d ParallelIO ]; then
+    rm -rf ParallelIO
 fi
 
-mkdir -p libraries
 
-cd libraries
-#create a direcrory anywhere you want
 # clone the repo
 echo "Clone ParallelIO repo"
 
@@ -73,11 +79,11 @@ cd bin
 git clone https://github.com/CESM-Development/CMake_Fortran_utils.git cmake
 cd ../..
 mkdir pio-build
-cd pio-build
 mkdir piolib
 
+cd pio-build
 
-
+# set the environment variables for the compilers
 #Ubuntu (added DNetCDF_C_INCLUDE_DIR and DNetCDF_C_LIBRARY) to explicility mention netcdf c
 # Detect platform for the extension of the shared libraries
 if [[ $(uname) == "Darwin" ]]; then
@@ -89,7 +95,7 @@ cmake ../ParallelIO \
   -DCMAKE_Fortran_COMPILER=mpifort \
   -DCMAKE_CXX_COMPILER=mpicxx \
   -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-  -DCMAKE_INSTALL_PREFIX=./piolib
+  -DCMAKE_INSTALL_PREFIX=../piolib
 else
   # Linux machine
   cmake ../ParallelIO \
@@ -102,7 +108,7 @@ else
   -DCMAKE_C_COMPILER=mpicc \
   -DCMAKE_Fortran_COMPILER=mpifort \
   -DCMAKE_CXX_COMPILER=mpicxx \
-  -DCMAKE_INSTALL_PREFIX=./piolib
+  -DCMAKE_INSTALL_PREFIX=../piolib
 fi
 
 
@@ -115,7 +121,7 @@ make install
 
 echo "Step 2: compile mizuRoute"
 
-cd ../../route/build
+cd ../..
 
 make clean
 
