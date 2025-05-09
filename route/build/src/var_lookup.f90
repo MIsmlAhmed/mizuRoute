@@ -160,7 +160,7 @@ MODULE var_lookup
   ! inland waterbody vars
   integer(i4b)     :: HDS_b               = integerMissing  ! 74. HDS: shape of contributing fraction curve (-)
   integer(i4b)     :: HDS_p               = integerMissing  ! 75. HDS: shape of the slope profile (-)
-  integer(i4b)     :: HDS_depAreaFrac     = integerMissing  ! 76. HDS: fractional depressional area (depressionArea/basinArea) (-)
+  integer(i4b)     :: HDS_depArea         = integerMissing  ! 76. HDS: depressional area (m2)
   integer(i4b)     :: HDS_depCatchAreaFrac= integerMissing  ! 77. HDS: fractional area (of the landArea = basinArea - depressionArea) that drains to the depressions (-)
   integer(i4b)     :: HDS_depVol          = integerMissing  ! 78. HDS: volume of depressional storage (m3)
 

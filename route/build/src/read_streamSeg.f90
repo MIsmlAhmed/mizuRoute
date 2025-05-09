@@ -314,6 +314,7 @@ SUBROUTINE mod_meta_varFile(ierr, message)
   integer(i4b)                       :: number_Hanasaki         ! number of lakes with parameteric Hanasaki 2006 formulation
   integer(i4b)                       :: number_HYPE             ! number of lakes with parameteric Hanasaki 2006 formulation
   integer(i4b)                       :: number_TargVol          ! number of lakes with target volume
+  integer(i4b)                       :: number_HDS              ! number of inland lakes with HDS formulation
   integer(i4b), allocatable          :: islake_local(:)         ! local array to save islake flag
   integer(i4b), allocatable          :: LakeTargVol_local(:)    ! local array to save LakeTargetVol flag
   integer(i4b), allocatable          :: LakeModelType_local(:)  ! local array to save LakeModelType flag
@@ -397,6 +398,7 @@ SUBROUTINE mod_meta_varFile(ierr, message)
     number_Hanasaki   =  0
     number_HYPE       =  0
     number_TargVol    =  0
+    number_HDS        =  0
 
     ! specifying which lake models are called and if there is conflict between lake model type and data driven flag
     do i = 1, nRch_local
@@ -417,6 +419,7 @@ SUBROUTINE mod_meta_varFile(ierr, message)
               case(1); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
               case(2); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
               case(3); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
+              case(5); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
               case default; ierr=20; message=trim(message)//'unable to identify the lake model type'; return
             end select
           endif
@@ -426,6 +429,7 @@ SUBROUTINE mod_meta_varFile(ierr, message)
             case(1); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
             case(2); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
             case(3); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
+            case(5); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
             case default; ierr=20; message=trim(message)//'unable to identify the lake model type'; return
           end select
         endif
@@ -440,10 +444,11 @@ SUBROUTINE mod_meta_varFile(ierr, message)
       write(iulog,'(A,1X,I10)') "lakes with Hanasaki formulation   = ", number_Hanasaki
       write(iulog,'(A,1X,I10)') "lakes with HYPE formulation       = ", number_HYPE
       write(iulog,'(A,1X,I10)') "lakes with target volume          = ", number_TargVol
+      write(iulog,'(A,1X,I10)') "lakes with HDS formulation        = ", number_HDS
     end if
 
     ! check is the number of parameteric lakes and target volume sums up to the total number of lakes
-    if (number_Endorheic+number_Doll+number_Hanasaki+number_HYPE+number_TargVol == number_lakes) then
+    if (number_Endorheic+number_Doll+number_Hanasaki+number_HYPE+number_TargVol+number_HDS == number_lakes) then
       if (masterproc) then
         write(iulog,'(A)') "number of lake models and target volume models matches the total number of lakes; should be good to go!"
       end if
@@ -530,6 +535,14 @@ SUBROUTINE mod_meta_varFile(ierr, message)
       meta_SEG(ixSEG%H06_D_mem_F)%varFile       = .true.    ! Hanasaki parameter
       meta_SEG(ixSEG%H06_I_mem_L)%varFile       = .true.    ! Hanasaki parameter
       meta_SEG(ixSEG%H06_D_mem_L)%varFile       = .true.    ! Hanasaki parameter
+    endif
+    ! inland waterbodies
+    if (number_HDS>0) then
+      meta_SEG(ixSEG%HDS_b               )%varFile = .true.         ! HDS: shape of contributing fraction curve (-)
+      meta_SEG(ixSEG%HDS_p               )%varFile = .true.         ! HDS: shape of the slope profile (-)
+      meta_SEG(ixSEG%HDS_depArea         )%varFile = .true.         ! HDS: depressional area (m2)
+      meta_SEG(ixSEG%HDS_depCatchAreaFrac)%varFile = .true.         ! HDS: fractional area of the landArea that drains to depressions (-)
+      meta_SEG(ixSEG%HDS_depVol          )%varFile = .true.         ! HDS: volume of depressional storage (m3)
     endif
 
   endif

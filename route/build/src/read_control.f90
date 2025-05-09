@@ -353,7 +353,7 @@ CONTAINS
    ! inland lake model (currenty supports only prairie potholes)
    case('<varname_HDS_b>'                    ); meta_SEG    (ixSEG%HDS_b                      )%varName =trim(cData)  ! HDS: shape of contributing fraction curve (-)
    case('<varname_HDS_p>'                    ); meta_SEG    (ixSEG%HDS_p                      )%varName =trim(cData)  ! HDS: shape of the slope profile (-)
-   case('<varname_HDS_depAreaFrac>'          ); meta_SEG    (ixSEG%HDS_depAreaFrac            )%varName =trim(cData)  ! HDS: fractional depressional area (depressionArea/basinArea) (-)
+   case('<varname_HDS_depArea>'              ); meta_SEG    (ixSEG%HDS_depArea                )%varName =trim(cData)  ! HDS: depressional area  (m2)
    case('<varname_HDS_depCatchAreaFrac>'     ); meta_SEG    (ixSEG%HDS_depCatchAreaFrac       )%varName =trim(cData)  ! HDS: fractional area (of the landArea = basinArea - depressionArea) that drains to the depressions (-)
    case('<varname_HDS_depVol>'               ); meta_SEG    (ixSEG%HDS_depVol                 )%varName =trim(cData)  ! HDS: volume of depressional storage (m3)
    

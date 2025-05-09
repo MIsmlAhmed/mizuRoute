@@ -486,7 +486,7 @@ END SUBROUTINE augment_ntopo
     ! inland waterbody simulation
      RPARAM_in(iSeg)%HDS_b                =     structSEG(iSeg)%var(ixSEG%HDS_b                )%dat(1)
      RPARAM_in(iSeg)%HDS_p                =     structSEG(iSeg)%var(ixSEG%HDS_p                )%dat(1)
-     RPARAM_in(iSeg)%HDS_depAreaFrac      =     structSEG(iSeg)%var(ixSEG%HDS_depAreaFrac      )%dat(1)
+     RPARAM_in(iSeg)%HDS_depArea          =     structSEG(iSeg)%var(ixSEG%HDS_depArea          )%dat(1)
      RPARAM_in(iSeg)%HDS_depCatchAreaFrac =     structSEG(iSeg)%var(ixSEG%HDS_depCatchAreaFrac )%dat(1)
      RPARAM_in(iSeg)%HDS_depVol           =     structSEG(iSeg)%var(ixSEG%HDS_depVol           )%dat(1)
    end if

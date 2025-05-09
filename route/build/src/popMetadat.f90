@@ -207,7 +207,7 @@ contains
  ! inland waterbody vars
  meta_SEG    (ixSEG%HDS_b               ) = var_info('HDS_b'               , 'HDS: shape of contributing fraction curve'                      , '-' , ixDims%seg , .false.)
  meta_SEG    (ixSEG%HDS_p               ) = var_info('HDS_p'               , 'HDS: shape of the slope profile'                                , '-' , ixDims%seg , .false.)
- meta_SEG    (ixSEG%HDS_depAreaFrac     ) = var_info('HDS_depAreaFrac'     , 'HDS: fractional depressional area (depressionArea/basinArea)'   , '-' , ixDims%seg , .false.)
+ meta_SEG    (ixSEG%HDS_depArea         ) = var_info('HDS_depArea'         , 'HDS: depressional area'                                         , 'm2', ixDims%seg , .false.)
  meta_SEG    (ixSEG%HDS_depCatchAreaFrac) = var_info('HDS_depCatchAreaFrac', 'HDS: fractional area of the landArea that drains to depressions', '-' , ixDims%seg , .false.)
  meta_SEG    (ixSEG%HDS_depVol          ) = var_info('HDS_depVol'          , 'HDS: volume of depressional storage'                            , 'm3', ixDims%seg , .false.)
 
