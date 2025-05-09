@@ -349,6 +349,14 @@ CONTAINS
    case('<varname_LakeTargVol>'  ); meta_NTOPO  (ixNTOPO%LakeTargVol   )%varName =trim(cData)  ! flag to follow the provided target volume (1=yes, 0=no)
    case('<varname_userTake>'     ); meta_NTOPO  (ixNTOPO%userTake      )%varName =trim(cData)  ! flag to define if user takes water from reach (1=extract, 0 otherwise)
    case('<varname_goodBasin>'    ); meta_NTOPO  (ixNTOPO%goodBasin     )%varName =trim(cData)  ! flag to define a good basin (1=good, 0=bad)
+   
+   ! inland lake model (currenty supports only prairie potholes)
+   case('<varname_HDS_b>'                    ); meta_SEG    (ixSEG%HDS_b                      )%varName =trim(cData)  ! HDS: shape of contributing fraction curve (-)
+   case('<varname_HDS_p>'                    ); meta_SEG    (ixSEG%HDS_p                      )%varName =trim(cData)  ! HDS: shape of the slope profile (-)
+   case('<varname_HDS_depAreaFrac>'          ); meta_SEG    (ixSEG%HDS_depAreaFrac            )%varName =trim(cData)  ! HDS: fractional depressional area (depressionArea/basinArea) (-)
+   case('<varname_HDS_depCatchAreaFrac>'     ); meta_SEG    (ixSEG%HDS_depCatchAreaFrac       )%varName =trim(cData)  ! HDS: fractional area (of the landArea = basinArea - depressionArea) that drains to the depressions (-)
+   case('<varname_HDS_depVol>'               ); meta_SEG    (ixSEG%HDS_depVol                 )%varName =trim(cData)  ! HDS: volume of depressional storage (m3)
+   
    ! pfafstetter code
    case('<varname_pfafCode>'     ); meta_PFAF   (ixPFAF%code           )%varName =trim(cData)  ! pfafstetter code
 

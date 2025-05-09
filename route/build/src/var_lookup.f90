@@ -157,6 +157,13 @@ MODULE var_lookup
   integer(i4b)     :: H06_D_mem_L      = integerMissing  ! 72.
   ! constraints
   integer(i4b)     :: minFlow       = integerMissing     ! 73. minimum environmental flow (m3/s)
+  ! inland waterbody vars
+  integer(i4b)     :: HDS_b               = integerMissing  ! 74. HDS: shape of contributing fraction curve (-)
+  integer(i4b)     :: HDS_p               = integerMissing  ! 75. HDS: shape of the slope profile (-)
+  integer(i4b)     :: HDS_depAreaFrac     = integerMissing  ! 76. HDS: fractional depressional area (depressionArea/basinArea) (-)
+  integer(i4b)     :: HDS_depCatchAreaFrac= integerMissing  ! 77. HDS: fractional area (of the landArea = basinArea - depressionArea) that drains to the depressions (-)
+  integer(i4b)     :: HDS_depVol          = integerMissing  ! 78. HDS: volume of depressional storage (m3)
+
  endtype iLook_SEG
  ! ***********************************************************************************************************
  ! ** define variables for the network topology (all are unitless)
@@ -296,7 +303,7 @@ MODULE var_lookup
                                                                          41,42,43,44,45,46,47,48,49,50, &
                                                                          51,52,53,54,55,56,57,58,59,60, &
                                                                          61,62,63,64,65,66,67,68,69,70, &
-                                                                         71,72,73)
+                                                                         71,72,73, 74, 75, 76, 77, 78)
  type(iLook_NTOPO)    ,public,parameter :: ixNTOPO     = iLook_NTOPO    ( 1, 2, 3, 4, 5, 6, 7, 8, 9,10, &
                                                                          11,12,13,14,15,16,17,18,19,20, &
                                                                          21,22)

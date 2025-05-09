@@ -204,6 +204,12 @@ contains
  meta_SEG    (ixSEG%H06_D_mem_F      ) = var_info('H06_D_mem_F'    , 'Hanasaki 2006; Flag to transition to modelled/provided demand'                           ,'-'     ,ixDims%seg   , .false.)
  meta_SEG    (ixSEG%H06_I_mem_L      ) = var_info('H06_I_mem_L'    , 'Hanasaki 2006; Memory length in years for inflow'                                        ,'-'     ,ixDims%seg   , .false.)
  meta_SEG    (ixSEG%H06_D_mem_L      ) = var_info('H06_D_mem_L'    , 'Hanasaki 2006; Memory length in years for demand'                                        ,'-'     ,ixDims%seg   , .false.)
+ ! inland waterbody vars
+ meta_SEG    (ixSEG%HDS_b               ) = var_info('HDS_b'               , 'HDS: shape of contributing fraction curve'                      , '-' , ixDims%seg , .false.)
+ meta_SEG    (ixSEG%HDS_p               ) = var_info('HDS_p'               , 'HDS: shape of the slope profile'                                , '-' , ixDims%seg , .false.)
+ meta_SEG    (ixSEG%HDS_depAreaFrac     ) = var_info('HDS_depAreaFrac'     , 'HDS: fractional depressional area (depressionArea/basinArea)'   , '-' , ixDims%seg , .false.)
+ meta_SEG    (ixSEG%HDS_depCatchAreaFrac) = var_info('HDS_depCatchAreaFrac', 'HDS: fractional area of the landArea that drains to depressions', '-' , ixDims%seg , .false.)
+ meta_SEG    (ixSEG%HDS_depVol          ) = var_info('HDS_depVol'          , 'HDS: volume of depressional storage'                            , 'm3', ixDims%seg , .false.)
 
  ! NTOPO                                         varName        varDesc                                                varUnit, varType, varFile
  meta_NTOPO  (ixNTOPO%nHRU           ) = var_info('nHRU'           , 'number of HRUs contributing flow to each segment'   ,'-'    ,ixDims%seg   , .false.)

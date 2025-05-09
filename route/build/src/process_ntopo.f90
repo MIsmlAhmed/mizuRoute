@@ -483,6 +483,12 @@ END SUBROUTINE augment_ntopo
      RPARAM_in(iSeg)%H06_D_mem_F     =     (structSEG(iSeg)%var(ixSEG%H06_D_mem_F)%dat(1)==1)
      RPARAM_in(iSeg)%H06_I_mem_L     =     structSEG(iSeg)%var(ixSEG%H06_I_mem_L )%dat(1)
      RPARAM_in(iSeg)%H06_D_mem_L     =     structSEG(iSeg)%var(ixSEG%H06_D_mem_L )%dat(1)
+    ! inland waterbody simulation
+     RPARAM_in(iSeg)%HDS_b                =     structSEG(iSeg)%var(ixSEG%HDS_b                )%dat(1)
+     RPARAM_in(iSeg)%HDS_p                =     structSEG(iSeg)%var(ixSEG%HDS_p                )%dat(1)
+     RPARAM_in(iSeg)%HDS_depAreaFrac      =     structSEG(iSeg)%var(ixSEG%HDS_depAreaFrac      )%dat(1)
+     RPARAM_in(iSeg)%HDS_depCatchAreaFrac =     structSEG(iSeg)%var(ixSEG%HDS_depCatchAreaFrac )%dat(1)
+     RPARAM_in(iSeg)%HDS_depVol           =     structSEG(iSeg)%var(ixSEG%HDS_depVol           )%dat(1)
    end if
 
    ! compute variables
@@ -551,7 +557,7 @@ END SUBROUTINE augment_ntopo
 !     NETOPO_in(iSeg)%RCHULAK = realMissing     ! Length of reach under lake
 !     NETOPO_in(iSeg)%USRTAKE = .false.         ! .TRUE. if user takes from reach, .FALSE. otherwise
    end if
-
+  
    ! reach unit hydrograph
    if (onRoute(impulseResponseFunc)) then
      allocate(NETOPO_in(iSeg)%UH(size(structSEG(iSeg)%var(ixSEG%timeDelayHist)%dat)), stat=ierr, errmsg=cmessage)

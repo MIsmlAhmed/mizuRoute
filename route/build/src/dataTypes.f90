@@ -257,6 +257,13 @@ implicit none
   logical(lgt)                               :: H06_D_mem_F    ! Hanasaki 2006; Flag to transition to modelled/provided demand [-]
   integer(i4b)                               :: H06_I_mem_L    ! Hanasaki 2006; Memory length in years for inflow [year]
   integer(i4b)                               :: H06_D_mem_L    ! Hanasaki 2006; Memory length in years for demand [year]
+  ! inland water body parameters
+  real(dp)                                   :: HDS_b                ! HDS: shape of contributing fraction curve (-)
+  real(dp)                                   :: HDS_p                ! HDS: shape of the slope profile (-)
+  real(dp)                                   :: HDS_depAreaFrac      ! HDS: fractional depressional area (depressionArea/basinArea) (-)
+  real(dp)                                   :: HDS_depCatchAreaFrac ! HDS: fractional area (of the landArea = basinArea - depressionArea) that drains to the depressions (-)
+  real(dp)                                   :: HDS_depVol           ! HDS: volume of depressional storage (m3)
+
  end type RCHPRP
 
  ! -- River Network topology
