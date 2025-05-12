@@ -48,7 +48,7 @@ ____________________
     mizuRoute can be compiled by building ParallelIO from scratch (similar to the above).
         - load the following modules
             ```
-            module load openmpi netcdf-fortran netcdf-c parallel-netcdf
+            module load openmpi netcdf-fortran netcdf-c parallel-netcdf cmake
             ```
             Note: `openmpi` needs to be loaded first to be able to load `parallel-netcdf` successfully.
         - run the `install_mizuRoute.sh` file.

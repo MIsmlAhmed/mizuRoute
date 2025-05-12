@@ -8,7 +8,8 @@ USE dataTypes,            ONLY: RCHPRP          ! Reach parameter
 USE dataTypes,            ONLY: runoff          ! runoff data type
 USE dataTypes,            ONLY: subbasin_omp    ! mainstem+tributary data structures
 USE globalData,           ONLY: routeMethods    ! Active routing method IDs
-USE public_var,           ONLY: is_lake_sim     ! lake simulation flag
+USE public_var,           ONLY: is_lake_sim, &  ! lake simulation flag
+                                lakeDecisions   ! lake decision flag
 USE process_remap_module, ONLY: basin2reach     ! remap HRU variable to reach
 USE basinUH_module,       ONLY: IRF_route_basin ! perform UH convolution for basin routing
 
@@ -141,6 +142,20 @@ CONTAINS
 
    endif
 
+   ! call inland lake modules
+   do iSeg = 1,nSeg
+     if ((NETOPO_in(iSeg)%islake).and.(is_lake_sim).and. NETOPO_in(iSeg)%LakeModelType==lakeDecisions%HDS) then
+      ! print *, 'lakeDecisions%HDS for iSeg', iSeg, NETOPO_in(iSeg)%reachID, NETOPO_in(iSeg)%LakeModelType
+      ! print *, 'calling HDS module'
+      call runDepression(NETOPO_in(iSeg),          & ! input: reach topology
+                         RPARAM_in(iSeg),          & ! input: reach parameter
+                         reachPrecip_local(iSeg),  & ! output: reach Precip (m3/s)
+                         reachEvapo_local(iSeg),   & ! output: reach Evapo (m3/s)
+                         reachRunoff_local(iSeg))    ! input/output: reach runoff (m3/s)
+      
+     end if
+   end do
+  
    ! 2. subroutine: basin route
    if (doesBasinRoute == 1) then
      ! instantaneous runoff volume (m3/s) to data structure
@@ -297,7 +312,8 @@ CONTAINS
         do iSeg = 1,river_basin(ix)%branch(iTrib)%nRch
           jSeg = river_basin(ix)%branch(iTrib)%segIndex(iSeg)
           if (.not. doRoute(jSeg)) cycle
-          if ((NETOPO_in(jseg)%islake).and.(is_lake_sim).and.iRoute/=idxSUM) then
+          if ((NETOPO_in(jseg)%islake).and.(is_lake_sim).and.iRoute/=idxSUM &
+          .and. NETOPO_in(jSeg)%LakeModelType /= lakeDecisions%HDS) then
             call lake_route(iEns, jSeg,    & ! input: ensemble and reach indices
                             iRoute,        & ! input: routing method index
                             ixDesire,      & ! input: index of verbose reach
@@ -306,6 +322,7 @@ CONTAINS
                             RCHFLX_out,    & ! inout: reach flux data structure
                             ierr,cmessage)   ! output: error control
           else
+            print *, 'regular routing for jSeg', jSeg, NETOPO_in(jSeg)%reachID, NETOPO_in(jSeg)%LakeModelType
             call rch_route%route(iEns,jSeg,      & ! input: array indices
                                  ixDesire,       & ! input: index of verbose reach
                                  T0,T1,          & ! input: start and end of the time step

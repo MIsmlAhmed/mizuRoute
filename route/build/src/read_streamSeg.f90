@@ -25,6 +25,7 @@ USE var_lookup, ONLY: ixSEG,    nVarsSEG     ! index of variables for the stream
 USE var_lookup, ONLY: ixHRU2SEG,nVarsHRU2SEG ! index of variables for the hru2segment mapping
 USE var_lookup, ONLY: ixNTOPO,  nVarsNTOPO   ! index of variables for the network topology
 USE var_lookup, ONLY: ixPFAF,   nVarsPFAF    ! index of variables for the pfafstetter code
+USE public_var, ONLY: lakeDecisions          ! lake decision flag
 
 ! netcdf modules
 USE netcdf
@@ -408,28 +409,29 @@ SUBROUTINE mod_meta_varFile(ierr, message)
           if (LakeTargVol_local(i) == 1) then ! if lake is not target volume then it should be parametertic
             number_TargVol = number_TargVol + 1 ! add number of target volume case
             select case(LakeModelType_local(i))
-              case(0); ierr=20; message=trim(message)//'both data driven (follow target volume) and Endorheic lake are activated for a lake'; return
-              case(1); ierr=20; message=trim(message)//'both data driven (follow target volume) and Doll lake formulation are activated for a lake'; return
-              case(2); ierr=20; message=trim(message)//'both data driven (follow target volume) and Hanasaki lake formulation are activated for a lake'; return
-              case(3); ierr=20; message=trim(message)//'both data driven (follow target volume) and HYPY lake formulation are activated for a lake'; return
+              case(lakeDecisions%Endorheic); ierr=20; message=trim(message)//'both data driven (follow target volume) and Endorheic lake are activated for a lake'; return
+              case(lakeDecisions%Doll     ); ierr=20; message=trim(message)//'both data driven (follow target volume) and Doll lake formulation are activated for a lake'; return
+              case(lakeDecisions%Hanasaki ); ierr=20; message=trim(message)//'both data driven (follow target volume) and Hanasaki lake formulation are activated for a lake'; return
+              case(lakeDecisions%HYPE     ); ierr=20; message=trim(message)//'both data driven (follow target volume) and HYPE lake formulation are activated for a lake'; return
+              case(lakeDecisions%HDS      ); ierr=20; message=trim(message)//'both data driven (follow target volume) and HDS lake formulation are activated for a lake'; return
             end select
           else
             select case(LakeModelType_local(i))
-              case(0); number_Endorheic = number_Endorheic + 1; ! add number of Endorheic lakes
-              case(1); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
-              case(2); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
-              case(3); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
-              case(5); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
+              case(lakeDecisions%Endorheic); number_Endorheic = number_Endorheic + 1; ! add number of Endorheic lakes
+              case(lakeDecisions%Doll     ); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
+              case(lakeDecisions%Hanasaki ); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
+              case(lakeDecisions%HYPE     ); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
+              case(lakeDecisions%HDS      ); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
               case default; ierr=20; message=trim(message)//'unable to identify the lake model type'; return
             end select
           endif
         else
           select case(LakeModelType_local(i))
-            case(0); number_Endorheic = number_Endorheic + 1; ! add number of Endorheic lakes
-            case(1); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
-            case(2); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
-            case(3); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
-            case(5); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
+            case(lakeDecisions%Endorheic); number_Endorheic = number_Endorheic + 1; ! add number of Endorheic lakes
+            case(lakeDecisions%Doll     ); number_Doll      = number_Doll      + 1; ! add number of Doll lakes
+            case(lakeDecisions%Hanasaki ); number_Hanasaki  = number_Hanasaki  + 1; ! add number of Hanasaki lakes
+            case(lakeDecisions%HYPE     ); number_HYPE      = number_HYPE      + 1; ! add number of HYPE lakes
+            case(lakeDecisions%HDS      ); number_HDS       = number_HDS       + 1; ! add number of HDS lakes
             case default; ierr=20; message=trim(message)//'unable to identify the lake model type'; return
           end select
         endif

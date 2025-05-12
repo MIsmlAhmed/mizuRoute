@@ -15,7 +15,7 @@ MODULE public_var
   ! physical constants
   real(dp),    parameter,public   :: pi=3.14159265359_dp    ! pi
   real(dp),    parameter,public   :: Cw=4190.0_dp           ! heat capacity of water [J/kg/K]
-  real(dp),    parameter,public   :: RoW=0.99975_dp         ! density of water [kg/m³] at 10 C-degree
+  real(dp),    parameter,public   :: RoW=999.75_dp         ! density of water [kg/m³] at 10 C-degree
 
   ! some common constant variables (not likely to change value)
   real(dp),    parameter,public   :: secprmin=60._dp        ! number of seconds in a minute
@@ -203,5 +203,16 @@ MODULE public_var
   ! CESM Coupling variables
   character(len=32)    ,public    :: bypass_routing_option = 'direct_in_place' ! bypass routing model method: direct_in_place or direct_to_outlet
   character(len=32)    ,public    :: qgwl_runoff_option    = 'threshold'       ! method for handling qgwl runoff: all, negative, or threshold
+  ! lake parameterization
+  ! Define a derived type for lake formulation
+  type :: lakeDecisionType
+  integer(i4b)             :: Endorheic = 0  ! Endorheic lakes
+  integer(i4b)             :: Doll      = 1  ! Doll lakes
+  integer(i4b)             :: Hanasaki  = 2  ! Hanasaki lakes
+  integer(i4b)             :: HYPE      = 3  ! HYPE lakes
+  integer(i4b)             :: HDS       = 5  ! HDS lakes (inland lakes)
+  end type lakeDecisionType
 
+  ! Declare a variable of the derived type
+  type(lakeDecisionType) , parameter,public :: lakeDecisions  = lakeDecisionType()
 END MODULE public_var
